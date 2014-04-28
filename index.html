@@ -6,12 +6,23 @@
 </head>
 <body>
 	<div id="wrapper">
-		<div id="touchpad"></div>
-		<select>
-			<option selected>Fight Screen</option>
+		<div id="touchpad">
+			<div class="touchscreen"></div>
+			<img class="ajaxloader" src="ajax/ajax_pokeball.gif"/>
+			<div class="highlight big"></div>
+			<div class="highlight small"></div>
+			<img class="screenimg" />
+		</div>
+		<select id="screenSel">
+			<option value="-1">Custom</option>
+			<option value="0" selected>Fight Screen</option>
 		</select>
 		<input type="button" value="Zoom" id="zoombutton" />
-		<div id="resultpad"></div>
+		<table id="resultpad">
+			<tr>
+				<td class="center">&nbsp;</td>
+			</tr>
+		</table>
 	</div>
 </body>
 </html>
