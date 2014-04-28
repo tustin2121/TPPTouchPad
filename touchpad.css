@@ -1,0 +1,25 @@
+/* touchpad.css */
+
+#wrapper {
+	width: 264px;
+}
+#wrapper.x2 {
+	width: 520px;
+}
+
+#touchpad {
+	width: 256px; height: 192px;
+	overflow: none;
+	border: 4px inset #aaa;
+}
+#wrapper.x2 #touchpad {
+	width: 512px; height: 384px;
+}
+
+#ouchpad.screen-fight {
+	
+}
+
+#zoombutton {
+	float: right;
+}
