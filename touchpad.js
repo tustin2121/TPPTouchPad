@@ -3,6 +3,44 @@
 var PREDEF_IMG = {
 	0 : "fight",
 	"fight" : "fight",
+	"battle-fight" : "fight",
+	1 : "battle-bag",
+	"battle-bag" : "battle-bag",
+	2 : "battle-pokemon",
+	"battle-pokemon" : "battle-pokemon",
+	
+	5 : "text-upper",
+	"text-upper" : "text-upper",
+	"keyboard-upper" : "text-upper",
+	6 : "text-lower",
+	"text-lower" : "text-lower",
+	"keyboard-lower" : "text-lower",
+	7 : "text-other",
+	"text-other" : "text-other",
+	"keyboard-other" : "text-other",
+	
+	10 : "pokedex-main",
+	"pokedex-main" : "pokedex-main",
+	11 : "pokedex-info",
+	"pokedex-info" : "pokedex-info",
+	12 : "pokedex-size",
+	"pokedex-size" : "pokedex-size",
+	13 : "pokedex-cry",
+	"pokedex-cry" : "pokedex-cry",
+	
+	20 : "bag",
+	"bag" : "bag",
+	21 : "pc-interface",
+	"pc-interface" : "pc-interface",
+	"pc" : "pc-interface",
+	
+	100 : "badgecase",
+	"badgecase" : "badgecase",
+	"badge-case" : "badgecase",
+	101 : "sign-trainer-card",
+	"sign-trainer-card" : "sign-trainer-card",
+	"trainer-card" : "sign-trainer-card",
+	"sign" : "sign-trainer-card",
 };
 
 var AJAX_LOADERS = [
@@ -43,6 +81,8 @@ function producePoint(e) {
 	if (x < 0 || x > 256) return;
 	if (y < 0 || y > 192) return;
 	
+	x++; y++; //adjust for stream correctness
+	
 	$("#resultpad .center").text(x+","+y);
 }
 
@@ -63,6 +103,7 @@ function setPredefImg(code) {
 	if (!img) return; //return if no such predef image
 	
 	setImage("screens/"+img+".png");
+	$("#screenSel").val(img);
 	
 	delete currHashmap["imgur"];
 	currHashmap["screen"] = code;
