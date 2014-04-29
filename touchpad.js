@@ -1,5 +1,7 @@
 // touchpad.js
 
+var ENABLE_BLACKLIST = false;
+
 var PREDEF_IMG = {
 	0 : "fight",
 	"fight" : "fight",
@@ -115,17 +117,68 @@ function setImage(src) {
 	$(".screenimg").attr("src", src);
 }
 
-function loadImgur(id) {
+function openImgurDialog() {
+	$("#imgurDlog").show();
+	$("#imgurDlog .err").text("");
+	$("#imgurDlog .linktext").val("");
+}
+
+function parseImgurLink() {
+	var text = $("#imgurDlog .linktext").val();
+	if (!text) return;
+	
+	var regex = /imgur\.com\/([a-zA-Z0-9]{7})/; //ID is assumed to always have 7 characters
+	var res = regex.exec(text);
+	
+	if (!res || !res[1]) {
+		$("#imgurDlog .err").text("Malformed Link!");
+	} else {
+		var id = res[1];
+		loadImgur(id, function(){
+			$("#imgurDlog").hide();
+		});
+	}
+	
+}
+
+function loadImgur(id, callback) {
 	console.info("Imgur ID = "+id);
 	currImg = id;
 	$("#touchpad .ajaxloader").show();
 	
-	//TODO load blacklist via ajax, check if on blacklist, reject if so
-	//TODO load image via ajax
+	if (ENABLE_BLACKLIST)
+	{
+		//TODO load blacklist via ajax, check if on blacklist, reject if so
+		var blacklist;
+		// $.ajax("black.list", {
+		$.ajax("http://tustin2121.github.io/TPPTouchPad/black.list", {
+			async: false,
+			// cache: false,
+			dataType: "text",
+			success: function(data) {
+				blacklist = data.split("\n");
+			},
+		});
+		console.log(blacklist);
+	}
+	
+	//load image via ajax
 	$("<img src='http://i.imgur.com/"+id+".png'>").on("load", function(e)
 	{
 		console.log(e);
-		// console.info(this, $(this).width(), $(this).height(), this.width, this.height);
+		
+		//HACK! JQuery doesn't expose the return code onload, so we have to make
+		// a hacky way of checking for a removed image... If the image is exactly
+		// 161 x 81 pixels, it's highly likely that it is the "removed.png" image...
+		// To be more precise, we'd need the API, but that requires registration.
+		if (this.width == 161 && this.height == 81)
+		{
+			$("#touchpad .ajaxloader").hide();
+			$("#imgurDlog .err").text("Image does not exist!");
+			console.log("Guessing this is probably 'removed.png'!");
+			return;
+		}
+		
 		//check if image is EXACTLY 256 x 192px, reject otherwise
 		if ( this.width == 256 && this.height == 192) 
 		{
@@ -138,14 +191,22 @@ function loadImgur(id) {
 			delete currHashmap["screen"];
 			currHashmap["imgur"] = id;
 			updateHash();
+			
+			if (callback) callback();
 		}
 		else
-		{
-			//error
+		{	//error
+			$("#touchpad .ajaxloader").hide();
+			$("#imgurDlog .err").text("Image is not 256x192!");
 			console.log("Not exact width/height!");
+			return;
 		}
-	}).on("error", function(){
+	}).on("error", function()
+	{
+		$("#touchpad .ajaxloader").hide();
+		$("#imgurDlog .err").text("Image does not exist!");
 		console.warn("Imgur link failed!");
+		return;
 	});
 }
 
@@ -192,14 +253,21 @@ function parseHash() {
 
 $(function(){ //jquery on ready
 	// Setup!	
-	$("#zoombutton").mouseup(function(){
+	$("#zoombutton").click(function(){
 		$("#wrapper").toggleClass("x2");
 	});
 	
 	$(".touchscreen").mouseup(producePoint);
 	
 	$("#screenSel").change(function(){
-		setPredefImg($("#screenSel").val());
+		var val = $("#screenSel").val();
+		if (val == -1) openImgurDialog();
+		else setPredefImg(val);
+	});
+	
+	$("#imgurDlog .submit").click(parseImgurLink);
+	$("#imgurDlog .cancel").click(function(){
+		$("#imgurDlog").hide();
 	});
 
 	$(".highlight").hide();	

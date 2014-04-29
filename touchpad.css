@@ -24,6 +24,39 @@
 	z-index: 10;
 }
 
+/* Imgur Dialog */
+#imgurDlog {
+	position: absolute;
+	top: 0; right: 0; bottom: 0; left: 0;
+	z-index: 15;
+	
+	text-align: center;
+	background-color: rgba(128, 128, 128, 0.85);
+	color: white;
+}
+
+#imgurDlog .cancel {
+	position: absolute;
+	bottom: 4; right: 4;
+}
+
+#imgurDlog .linktext {
+	margin-bottom: 6px;
+}
+
+#imgurDlog .err:empty {
+	background-color: transparent;
+	padding: 0;
+	border-radius: 0;
+}
+#imgurDlog .err {
+	font-weight: bold;
+	color: red; 
+	background-color: white;
+	padding: 2px;
+	border-radius: 6px;
+}
+
 
 #touchpad .screenimg {
 	width: 256px; height: 192px;
