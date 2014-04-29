@@ -257,7 +257,21 @@ $(function(){ //jquery on ready
 		$("#wrapper").toggleClass("x2");
 	});
 	
-	$(".touchscreen").mouseup(producePoint);
+	//$(".touchscreen").mouseup(producePoint);
+	$(".touchscreen").on({
+		mousedown : function(e){
+			$(".touchscreen").mousemove(producePoint);
+		},
+		mouseup : function(e){
+			$(".touchscreen").unbind("mousemove");
+		},
+		mouseleave : function(e) {
+			$(".touchscreen").unbind("mousemove");
+		},
+		mouseenter : function(e) {
+			$(".touchscreen").unbind("mousemove");
+		}
+	});
 	
 	$("#screenSel").change(function(){
 		var val = $("#screenSel").val();
