@@ -43,6 +43,9 @@ var PREDEF_IMG = {
 	"sign-trainer-card" : "sign-trainer-card",
 	"trainer-card" : "sign-trainer-card",
 	"sign" : "sign-trainer-card",
+	102 : "tutorial-buttons",
+	"tutorial-buttons" : "tutorial-buttons",
+	"yes-no" : "tutorial-buttons",
 };
 
 var AJAX_LOADERS = [
@@ -299,8 +302,8 @@ $(function(){ //jquery on ready
 	}
 	
 	if (!currImg) {
-		//setPredefImg("fight");
-		setImage("screens/fight.png");
+		setPredefImg("tutorial-buttons");
+		// setImage("screens/fight.png");
 	}
 	
 });
